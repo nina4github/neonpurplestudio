@@ -3,7 +3,7 @@
 This folder is a copy of the **Neon Purple studio** design system artifact:
 https://claude.ai/artifact/RcKcpc6QZomFV9B2qLBkXT
 
-- Synced from version `1795350651-48fc` on 2026-11-22.
+- Synced from version `1795350818-048c` on 2026-11-22.
 - The artifact is the source of truth. Refine the design system there (in Claude), then ask Claude Code to "sync the design system" (pull) to update this folder.
 - Do not edit these files by hand. Edits made here can be pushed back to the artifact the same way ("push the design system").
 
