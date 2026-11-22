@@ -38,7 +38,7 @@ The logo is a square neon sign: one tube frame with rounded corners around three
 
 - **neon-purple-studio-logo.svg / .png** and **-logo-dark.svg / .png:** the lit sign with its halo and wall shadow, on `paper` (light) or the dark wall, 2048×2048. For covers, profile pictures and social images.
 - **neon-purple-studio-mark.svg:** the same square, flat in `neon`, transparent, no glow. For documents and app icons, 48px and up.
-- **neon-purple-studio-wordmark.svg:** a horizontal version for tight heights: "NEON PURPLE" on one line with "studio" and its line beneath, flat in `neon`, no frame. The site header uses it.
+- **neon-purple-studio-wordmark.svg** and **-wordmark-dark.svg:** a horizontal version for tight heights: "NEON PURPLE" on one line with "studio" and its line beneath, flat, no frame. Light: `neon`. Dark: dark-theme `neon-ink`, because flat `neon` is too faint on the dark wall. The site header shows the one that matches the theme.
 
 Keep clear space equal to the height of "studio" on every side. Place the logos on `paper`, `surface`, `ink` or `graphite`; never on `neon` or `neon-tint`, and never recoloured, outlined or stretched. On the website the home hero uses the NeonSign component, a live version of the square logo; everywhere else uses the files.
 
@@ -48,7 +48,7 @@ No icon set yet. Until there is one, use a 1.5px-stroke outline set at 20px in `
 
 ## Accessibility
 
-Light: `ink` on `paper` is 16:1 and `ink-muted` 6.2:1. `neon` on `paper` is 4.2:1, fine for fills, marks and type 24px and up, not for small text. `on-neon` on `neon` is 4.6:1; `neon-ink` on `paper` is 7.1:1.
+Light: `ink` on `paper` is 16:1 and `ink-muted` 6.2:1. `neon` on `paper` is 4.6:1 and on `surface` 5.0:1, but keep it to fills, marks, the sign and type 24px and up; small text uses `neon-ink`. `on-neon` on `neon` is 5.0:1; `neon-ink` on `paper` is 7.1:1.
 
 Dark: `ink` on `paper` is 16.5:1, `ink-muted` 8.5:1, `neon-ink` 9.2:1, and `on-neon` (dark text) on `neon` 5.6:1.
 

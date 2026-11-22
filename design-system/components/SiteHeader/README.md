@@ -4,7 +4,7 @@ The top of every page: a skip link, the logo wordmark linking home, the main nav
 
 **Provide:**
 - `<a class="np-skip" href="#main">` as the first element in `<body>`, and `id="main"` on `<main>`;
-- the logo as `<img class="np-header__logo">` using `neon-purple-studio-wordmark.svg`, with alt text "Neon Purple studio, home";
+- the logo as two images inside the brand link: `<img class="np-header__logo np-header__logo--light">` with `neon-purple-studio-wordmark.svg` and `<img class="np-header__logo np-header__logo--dark">` with `neon-purple-studio-wordmark-dark.svg`, both with alt text "Neon Purple studio, home". The CSS shows exactly one, following the theme, so screen readers hear the name once;
 - `<nav class="np-nav" aria-label="Main">` with a list of links;
 - the ThemeToggle.
 

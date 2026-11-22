@@ -2,6 +2,7 @@
 import { SITE } from "../site.config"
 import { url } from "../lib/url"
 import wordmark from "../../design-system/assets/Logos/neon-purple-studio-wordmark.svg?url"
+import wordmarkDark from "../../design-system/assets/Logos/neon-purple-studio-wordmark-dark.svg?url"
 
 const items = [
   { label: "Work", href: url("/work/") },
@@ -17,7 +18,8 @@ const isCurrent = (href: string) => href.startsWith("/") && path.startsWith(href
 <header class="np-header">
   <div class="np-header__inner">
     <a class="np-header__brand" href={url("/")}>
-      <img class="np-header__logo" src={wordmark} alt={`${SITE.name}, home`} width="160" height="40" />
+      <img class="np-header__logo np-header__logo--light" src={wordmark} alt={`${SITE.name}, home`} width="199" height="40" />
+      <img class="np-header__logo np-header__logo--dark" src={wordmarkDark} alt={`${SITE.name}, home`} width="199" height="40" />
     </a>
     <div class="np-header__end">
       <nav class="np-nav" aria-label="Main">
