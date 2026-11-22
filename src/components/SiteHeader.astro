@@ -4,11 +4,10 @@ import { url } from "../lib/url"
 import wordmark from "../../design-system/assets/Logos/neon-purple-studio-wordmark.svg?url"
 import wordmarkDark from "../../design-system/assets/Logos/neon-purple-studio-wordmark-dark.svg?url"
 
-const items = [
+const items: { label: string; href: string; external?: string }[] = [
   { label: "Work", href: url("/work/") },
   { label: "Writing", href: url("/writing/") },
   { label: "About", href: url("/about/") },
-  { label: "Ideas", href: SITE.ideasUrl, external: "notes site" },
   { label: "Contact", href: url("/contact/") },
 ]
 const path = Astro.url.pathname

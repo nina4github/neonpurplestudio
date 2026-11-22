@@ -41,6 +41,9 @@ const posts = defineCollection({
         cover: image().optional(),
         coverAlt: z.string().optional(),
         draft: z.boolean().default(false),
+        // Optional: group posts into a numbered series, e.g. "From Obsidian to the Web", part 1, 2, 3
+        series: z.string().optional(),
+        seriesPart: z.number().int().positive().optional(),
       })
       .refine((d) => !d.cover || (d.coverAlt && d.coverAlt.trim().length > 0), {
         message: "A post with a cover needs coverAlt.",

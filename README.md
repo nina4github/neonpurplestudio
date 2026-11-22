@@ -33,6 +33,8 @@ Same as a project, in `content/posts/`, with **Insert template → post**. A pos
 
 Posts appear under Writing, newest first, and in the RSS feed.
 
+To group posts into a series, give each one the same `series` name and a `seriesPart` number (`1`, `2`, …). Each post in the series then lists all its parts. Draft parts are listed only when you run the site locally.
+
 ## Drafts
 
 `draft: true` shows the page while you run the site locally (with a Draft badge), and leaves it out of the live site, the RSS feed and the sitemap. Remove the line, or set it to `false`, to publish.
@@ -77,7 +79,7 @@ Then open http://localhost:4321/neonpurplestudio/. `npm run build` runs the same
 
 - the name and description;
 - the public email (leave it empty to hide it);
-- the LinkedIn and Ideas links;
+- the LinkedIn link;
 - the **Formward** form endpoint. Leave it empty to hide the contact form.
 
 In the Formward form settings, add `https://nina4github.github.io` (later your own domain) to the allowed origins.
