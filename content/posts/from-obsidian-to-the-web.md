@@ -1,7 +1,9 @@
 ---
-title: "From Obsidian to the Web, part 1: publishing notes with Quartz"
-description: How I got a selection of my Obsidian notes online with Quartz, GitHub and GitHub Pages, and what I'd do differently.
-pubDate: 2025-12-10
+title: 'From Obsidian to the Web, part 1: publishing notes with Quartz'
+description: >-
+  How I got a selection of my Obsidian notes online with Quartz, GitHub and
+  GitHub Pages, and what I'd do differently.
+pubDate: 2025-12-10T00:00:00.000Z
 tags:
   - Obsidian
   - Quartz

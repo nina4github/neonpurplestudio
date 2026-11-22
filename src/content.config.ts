@@ -2,11 +2,13 @@ import { defineCollection } from "astro:content"
 import { glob } from "astro/loaders"
 import { z } from "astro/zod"
 
-// All content lives as markdown in /content (also an Obsidian vault).
-// The schemas below check every file's frontmatter at build time; a typo fails the build with a clear message.
+// The notes are written in Obsidian (iCloud: Ninas/NeonPurpleStudio/Website). scripts/content.mjs copies them
+// into content/ when publishing, or into .content-preview/ (drafts included) for `npm run dev`.
+// The schemas below check every note's properties at build time; a typo fails the build with a clear message.
+const CONTENT = process.env.NPS_CONTENT ?? "content"
 
 const projects = defineCollection({
-  loader: glob({ base: "./content/projects", pattern: "*.md" }),
+  loader: glob({ base: `./${CONTENT}/projects`, pattern: "*.md" }),
   schema: ({ image }) =>
     z
       .object({
@@ -29,7 +31,7 @@ const projects = defineCollection({
 })
 
 const posts = defineCollection({
-  loader: glob({ base: "./content/posts", pattern: "*.md" }),
+  loader: glob({ base: `./${CONTENT}/posts`, pattern: "*.md" }),
   schema: ({ image }) =>
     z
       .object({
@@ -52,7 +54,7 @@ const posts = defineCollection({
 })
 
 const pages = defineCollection({
-  loader: glob({ base: "./content/pages", pattern: "*.md" }),
+  loader: glob({ base: `./${CONTENT}/pages`, pattern: "*.md" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),

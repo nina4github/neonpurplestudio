@@ -1,6 +1,9 @@
 ---
 title: Accessibility and design system
-summary: Accessibility was treated as a late-stage fix. I ran the accessibility program and founded the design system team, and product, engineering and sales moved toward WCAG by default.
+summary: >-
+  Accessibility was treated as a late-stage fix. I ran the accessibility program
+  and founded the design system team, and product, engineering and sales moved
+  toward WCAG by default.
 client: Enterprise SaaS
 tags:
   - Accessibility (WCAG)

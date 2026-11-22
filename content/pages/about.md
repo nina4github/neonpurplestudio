@@ -1,6 +1,8 @@
 ---
 title: About
-description: Elena Nazzi, founder of Neon Purple Studio. 20+ years across engineering, research, design and product.
+description: >-
+  Elena Nazzi, founder of Neon Purple Studio. 20+ years across engineering,
+  research, design and product.
 draft: false
 ---
 

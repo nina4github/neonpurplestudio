@@ -1,6 +1,9 @@
 ---
-title: "JORD+: building AI, and building with AI"
-summary: Construction generates huge amounts of waste because soil data is scattered. I'm co-founding a soil-management platform where every AI answer must trace back to a validated source.
+title: 'JORD+: building AI, and building with AI'
+summary: >-
+  Construction generates huge amounts of waste because soil data is scattered.
+  I'm co-founding a soil-management platform where every AI answer must trace
+  back to a validated source.
 client: JORD+
 year: Current
 tags:

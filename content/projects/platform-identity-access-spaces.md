@@ -1,6 +1,9 @@
 ---
-title: "Platform: identity, access and Spaces"
-summary: A major healthcare customer needed departments to self-serve while central teams kept control. I led a fine-grained access foundation across three product teams, and Spaces became a new revenue stream.
+title: 'Platform: identity, access and Spaces'
+summary: >-
+  A major healthcare customer needed departments to self-serve while central
+  teams kept control. I led a fine-grained access foundation across three
+  product teams, and Spaces became a new revenue stream.
 client: Enterprise SaaS
 tags:
   - Systems thinking

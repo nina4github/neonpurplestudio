@@ -4,74 +4,121 @@ The website of Neon Purple Studio, built with [Astro](https://astro.build) and p
 
 Live site: https://nina4github.github.io/neonpurplestudio/
 
-All text and images live as markdown files in [`content/`](content/). Changing the site never requires code: edit a file, push, and the site redeploys in about a minute.
+## Where the content lives
 
-## Add a project
+All text and images are notes in your Obsidian vault on iCloud:
 
-1. In Obsidian, create a note in `content/projects/` and run **Insert template → project**, or copy an existing project file.
-2. Fill in the properties at the top:
+```
+Ninas/                              ← your Obsidian vault (iCloud)
+  NeonPurpleStudio/                 ← everything about the studio
+    Website/                        ← the website: only this folder is published
+      posts/                        ← one note per post (Writing)
+      projects/                     ← one note per project (Work)
+      pages/                        ← home.md, about.md, contact.md
+    …LinkedIn posts, plans, other studio notes (never published)
+  Templates/
+    Website post.md, Website project.md
+```
 
-   | Property | What it does |
-   | --- | --- |
-   | `title` | The project name. |
-   | `summary` | One or two sentences, problem and outcome. Shown on the card. |
-   | `client`, `year` | Optional. Shown above the title. |
-   | `tags` | Up to three skills. |
-   | `cover`, `coverAlt` | Optional image, e.g. `./images/jord.jpg`. A cover needs `coverAlt`, a description of the image for screen-reader users. |
-   | `featured` | `true` puts it on the home page (the first three, by `order`). |
-   | `order` | Lower numbers come first. |
-   | `draft` | `true` keeps it off the live site. |
+You never edit files in this repository to change the site. Write in Obsidian, then run one command to publish.
 
-3. Write the story below the properties. Use `##` headings (The problem / My contribution / The outcome).
-4. Images: paste or drag them into the note. Obsidian saves them in `content/projects/images/` with a relative link, which the site understands.
+Changing the site never requires code. **This repository is public**: only notes you publish reach it, and drafts stay on iCloud.
 
-The file name becomes the address: `jord-plus.md` → `/work/jord-plus/`.
+How it works:
+
+- `npm run dev` previews the site with your notes, drafts included, and updates as you type.
+- `npm run publish` copies the publishable notes and their images into [`content/`](content/), checks the build, commits `content/` and pushes. GitHub then deploys in about a minute.
+- `content/` is generated. Don't edit it by hand: the next publish overwrites it.
+
+The copy step is done by `scripts/content.mjs`. It:
+
+- leaves out every note with `draft: true`;
+- names each file after its web address, for example `accessible-forms.md` → `/writing/accessible-forms/`;
+- turns `[[wikilinks]]` between website notes into web links. `[[Note#Heading|text]]` works too. A link to a note outside `Website/`, or to a draft, becomes plain text, and the script lists it so you can check;
+- finds embedded images anywhere in the vault (`![[photo.png|description]]`, `![description](photo.png)`, or a `cover` property) and copies them next to the note. Text after `|` becomes the image's alt text; the script warns about images without it.
 
 ## Add a post
 
-Same as a project, in `content/posts/`, with **Insert template → post**. A post needs `title`, `description` and `pubDate` (`2026-11-21`). Optional: `updatedDate`, `tags`, `cover` + `coverAlt`.
+1. In Obsidian, create a note in `NeonPurpleStudio/Website/posts/`. Name it in lowercase with dashes (`accessible-forms.md`): the file name becomes the web address.
+2. Run **Insert template → Website post**.
+3. Fill in the properties:
 
-Posts appear under Writing, newest first, and in the RSS feed.
+   | Property | What it does |
+   | --- | --- |
+   | `title` | The title readers see. |
+   | `description` | One sentence. Shown in the list, in search results and when the post is shared. |
+   | `pubDate` | The date, e.g. `2026-11-22`. Posts are listed newest first. |
+   | `updatedDate` | Optional. |
+   | `tags` | Optional topics. |
+   | `cover`, `coverAlt` | Optional image (`[[photo.png]]`). A cover needs `coverAlt`, a description for screen-reader users. |
+   | `series`, `seriesPart` | Optional. Posts with the same `series` name are listed together, in `seriesPart` order (1, 2, 3…). |
+   | `draft` | `true` keeps it private. Remove it to publish. |
 
-To group posts into a series, give each one the same `series` name and a `seriesPart` number (`1`, `2`, …). Each post in the series then lists all its parts. Draft parts are listed only when you run the site locally.
+4. Write below the properties. Use `##` for section headings (the title is the page's only top heading).
+
+Posts also appear in the RSS feed.
+
+## Add a project
+
+Same as a post, in `NeonPurpleStudio/Website/projects/`, with **Insert template → Website project**:
+
+| Property | What it does |
+| --- | --- |
+| `title` | The project name. |
+| `summary` | One or two sentences, problem and outcome. Shown on the card. |
+| `client`, `year` | Optional. Shown above the title. |
+| `tags` | Up to three skills. |
+| `cover`, `coverAlt` | Optional image, as for posts. |
+| `featured` | `true` puts it on the home page (the first three, by `order`). |
+| `order` | Lower numbers come first. |
+| `draft` | `true` keeps it private. |
+
+Use `##` headings for the story: The problem / My contribution / The outcome.
+
+## Edit the home, about and contact pages
+
+They are the notes in `NeonPurpleStudio/Website/pages/`. `home.md` holds the hero text, the four services and your three beliefs as properties, and the "How I work" text below them. Keep the file names: the site looks for exactly these three.
 
 ## Drafts
 
-`draft: true` shows the page while you run the site locally (with a Draft badge), and leaves it out of the live site, the RSS feed and the sitemap. Remove the line, or set it to `false`, to publish.
+A note with `draft: true`:
 
-## Publish
+- shows while you run `npm run dev`, with a Draft badge;
+- never leaves iCloud: it is not copied into this public repository, the live site, the RSS feed or the sitemap.
 
-Every push to `main` builds and deploys the site (`.github/workflows/deploy.yml`).
+Remove the line, or set it to `false`, then publish.
 
-**From Obsidian.** Install the community plugin **Obsidian Git** (Settings → Community plugins → Browse → "Git"). Then use the command **Obsidian Git: Commit-and-sync** (or its sidebar button). It commits your changes in `content/` and pushes them. Suggested settings:
+## Preview and publish
 
-- *Pull on startup:* on, so you start from the latest version.
-- *Auto commit-and-sync interval:* 0 (off), so you decide when something goes live.
-- *Commit message:* `content: {{date}}`.
-
-Git finds the repository one folder above the vault on its own. Keep the repository out of iCloud: syncing a git folder through iCloud can corrupt it.
-
-**From the terminal:**
-
-```bash
-git add content && git commit -m "content: update" && git push
-```
-
-If the build fails, GitHub emails you and the live site stays as it was. The usual cause is a property with a typo; the Actions log names the file and the field.
-
-## Run locally
-
-Needs Node 22 or newer.
+You need Node 22 or newer. Once, in this folder:
 
 ```bash
 npm install
 ```
 
+To preview while you write:
+
 ```bash
 npm run dev
 ```
 
-Then open http://localhost:4321/neonpurplestudio/. `npm run build` runs the same checks as the deploy, including the content schemas.
+Then open http://localhost:4321/neonpurplestudio/. Pages update when you save a note in Obsidian.
+
+To publish everything that is not a draft:
+
+```bash
+npm run publish
+```
+
+The terminal lists what it publishes, what stays private, and anything to check (a broken link, an image without alt text). Your commits are signed, so macOS may ask for your GPG passphrase. If the build check fails, nothing is pushed; the message names the note and the property.
+
+To check without committing or pushing: `npm run content`.
+
+**Publishing from Obsidian** (optional): install the community plugin **Shell commands**, add the command `cd ~/Projects/nina_webpages/neonpurplestudio && npm run publish`, and give it a hotkey or a ribbon button.
+
+If a deploy fails on GitHub, GitHub emails you and the live site stays as it was.
+
+**Other computers:** without the iCloud vault, `npm run dev` previews the published `content/` folder instead. To use another folder, set `NPS_SOURCE`, e.g. `NPS_SOURCE=/path/to/Website npm run dev`.
 
 ## Settings
 
