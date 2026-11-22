@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from "astro:content"
+import { url } from "../lib/url"
+import { formatDate } from "../lib/content"
+interface Props { posts: CollectionEntry<"posts">[]; headingLevel?: "h2" | "h3" }
+const { posts, headingLevel = "h2" } = Astro.props
+const Heading = headingLevel
+---
+<ul class="np-posts">
+  {posts.map((p) => (
+    <li class="np-post">
+      <time class="np-post__date" datetime={p.data.pubDate.toISOString().slice(0, 10)}>{formatDate(p.data.pubDate)}</time>
+      <Heading class="np-post__title">
+        <a href={url(`/writing/${p.id}/`)}>{p.data.title}</a>
+        {p.data.draft && <span class="site-draft-badge">Draft</span>}
+      </Heading>
+      <p class="np-post__desc">{p.data.description}</p>
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,49 @@
+---
+import { SITE } from "../site.config"
+import { url } from "../lib/url"
+import ogDefault from "../../design-system/assets/Logos/neon-purple-studio-logo.png?url"
+import favicon from "../../design-system/assets/Logos/neon-purple-studio-mark.svg?url"
+
+interface Props {
+  title?: string
+  description?: string
+  image?: string
+  type?: "website" | "article"
+  noindex?: boolean
+}
+const { title, description = SITE.description, image, type = "website", noindex = false } = Astro.props
+const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · Strong products, strong teams`
+const canonical = new URL(Astro.url.pathname, Astro.site)
+const ogImage = new URL(image ?? ogDefault, Astro.site)
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+<link rel="icon" type="image/svg+xml" href={favicon} />
+<link rel="alternate" type="application/rss+xml" title={`${SITE.name}: writing`} href={url("/rss.xml")} />
+<link rel="sitemap" href={url("/sitemap-index.xml")} />
+<meta name="author" content={SITE.author} />
+<meta name="color-scheme" content="light dark" />
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={title ?? SITE.name} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={title ?? SITE.name} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script is:inline>
+  // Apply a saved theme before first paint, so pages never flash the wrong theme.
+  try {
+    var t = localStorage.getItem("np-theme")
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t)
+  } catch (e) {}
+</script>

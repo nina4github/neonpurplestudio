@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets"
+import type { CollectionEntry } from "astro:content"
+import { url } from "../lib/url"
+
+interface Props {
+  project: CollectionEntry<"projects">
+  headingLevel?: "h2" | "h3"
+}
+const { project, headingLevel = "h3" } = Astro.props
+const { title, summary, client, year, cover, coverAlt, tags, draft } = project.data
+const meta = [client, year].filter(Boolean).join(" · ")
+const Heading = headingLevel
+---
+<article class="np-card">
+  {cover ? (
+    <Image class="np-card__media" src={cover} alt={coverAlt ?? ""} widths={[400, 800]} sizes="(min-width: 768px) 400px, 100vw" />
+  ) : (
+    <div class="np-card__media np-card__media--placeholder" aria-hidden="true"></div>
+  )}
+  <div class="np-card__body">
+    {(meta || draft) && (
+      <p class="np-card__meta">{draft && <span class="site-draft-badge">Draft</span>} {meta}</p>
+    )}
+    <Heading class="np-card__title"><a class="np-card__link" href={url(`/work/${project.id}/`)}>{title}</a></Heading>
+    <p class="np-card__summary">{summary}</p>
+    {tags.length > 0 && (
+      <ul class="np-tags" aria-label="Skills">
+        {tags.map((t) => <li class="np-tag">{t}</li>)}
+      </ul>
+    )}
+  </div>
+</article>

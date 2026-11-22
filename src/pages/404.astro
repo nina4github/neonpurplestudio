@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import PageHeader from "../components/PageHeader.astro"
+import { url } from "../lib/url"
+---
+<BaseLayout title="Page not found" noindex>
+  <PageHeader title="This light is off." eyebrow="404 · Page not found" lead="The page you're looking for doesn't exist or has moved." />
+  <div class="site-container site-actions" style="padding-bottom: var(--space-24)">
+    <a class="np-btn np-btn--primary" href={url("/")}>Go to the home page</a>
+    <a class="np-btn np-btn--ghost" href={url("/work/")}>See my work</a>
+  </div>
+</BaseLayout>

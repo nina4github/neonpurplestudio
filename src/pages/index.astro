@@ -1,0 +1,109 @@
+---
+import { render } from "astro:content"
+import BaseLayout from "../layouts/BaseLayout.astro"
+import NeonSign from "../components/NeonSign.astro"
+import ProjectCard from "../components/ProjectCard.astro"
+import PullQuote from "../components/PullQuote.astro"
+import { getPage, getProjects } from "../lib/content"
+import { url } from "../lib/url"
+import { SITE } from "../site.config"
+
+const home = await getPage("home")
+const { headline, summary, services = [], beliefs = [] } = home.data
+const { Content: Approach } = await render(home)
+const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 3)
+---
+<BaseLayout description={home.data.description}>
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="site-container home-hero__inner">
+      <div class="home-hero__text">
+        <h1 id="home-title" class="np-visually-hidden">{SITE.name}</h1>
+        <p class="site-eyebrow">{SITE.author} · {SITE.name}</p>
+        <p class="site-display">{headline}</p>
+        <p class="site-lead">{summary}</p>
+        <div class="site-actions">
+          <a class="np-btn np-btn--primary" href={url("/contact/")}>Let's talk</a>
+          <a class="np-btn np-btn--secondary" href={url("/work/")}>See my work</a>
+        </div>
+      </div>
+      <div class="home-hero__sign">
+        <NeonSign />
+      </div>
+    </div>
+  </section>
+
+  {services.length > 0 && (
+    <section class="site-section" aria-labelledby="help-title">
+      <div class="site-container">
+        <div class="site-section-head">
+          <h2 id="help-title" class="site-h1">What I help with</h2>
+        </div>
+        <ul class="home-services">
+          {services.map((s) => (
+            <li class="home-service">
+              <h3 class="site-h2">{s.title}</h3>
+              <p class="site-muted">{s.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {featured.length > 0 && (
+    <section class="site-section" aria-labelledby="work-title">
+      <div class="site-container">
+        <div class="site-section-head">
+          <h2 id="work-title" class="site-h1">Selected work</h2>
+        </div>
+        <div class="site-grid">
+          {featured.map((p) => <ProjectCard project={p} />)}
+        </div>
+        <p class="home-more"><a class="np-btn np-btn--ghost" href={url("/work/")}>All work</a></p>
+      </div>
+    </section>
+  )}
+
+  <section class="site-section" aria-labelledby="approach-title">
+    <div class="site-container home-approach">
+      <div class="site-section-head">
+        <h2 id="approach-title" class="site-h1">How I work</h2>
+        <div class="site-prose"><Approach /></div>
+      </div>
+      {beliefs.length > 0 && (
+        <div class="home-beliefs">
+          {beliefs.map((b) => <PullQuote text={b} />)}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="site-section home-cta" aria-labelledby="cta-title">
+    <div class="site-container site-stack">
+      <h2 id="cta-title" class="site-display">Let's talk.</h2>
+      <p class="site-lead">Tell me about the product, the team or the accessibility challenge in front of you.</p>
+      <div class="site-actions">
+        <a class="np-btn np-btn--primary" href={url("/contact/")}>Get in touch</a>
+        <a class="np-btn np-btn--ghost" href={url("/about/")}>More about me</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-hero { padding-block: var(--space-16) var(--space-16); }
+  .home-hero__inner { display: grid; gap: var(--space-12); align-items: center; }
+  .home-hero__text { display: flex; flex-direction: column; gap: var(--space-6); min-width: 0; }
+  .home-hero__sign { display: flex; justify-content: center; min-width: 0; }
+  .home-hero__sign :global(.np-sign) { --np-size: clamp(44px, 11vw, 88px); }
+  @media (min-width: 960px) {
+    .home-hero { padding-block: var(--space-24) var(--space-32); }
+    .home-hero__inner { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+    .home-hero__sign :global(.np-sign) { --np-size: clamp(64px, 6.4vw, 96px); }
+  }
+  .home-services { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-10) var(--space-6); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .home-service { display: flex; flex-direction: column; gap: var(--space-3); padding-top: var(--space-4); border-top: 2px solid var(--neon); }
+  .home-more { margin-top: var(--space-10); }
+  .home-approach .site-section-head { margin-bottom: var(--space-16); }
+  .home-beliefs { display: grid; gap: var(--space-12) var(--space-10); grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+</style>

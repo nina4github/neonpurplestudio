@@ -1,0 +1,249 @@
+/* Neon Purple studio — component styles.
+   Uses only the custom properties from tokens.css. Every class is prefixed np-.
+   Shared by the studio site and the Quartz notes site. */
+
+.np-visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Focus: one ring everywhere ---------- */
+.np-btn:focus-visible, .np-link:focus-visible, .np-nav a:focus-visible, .np-header__brand:focus-visible,
+.np-skip:focus-visible, .np-theme-toggle:focus-visible, .np-post__title a:focus-visible {
+  outline: 3px solid var(--focus-ring); outline-offset: 3px;
+}
+
+/* ---------- Button ---------- */
+.np-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 44px; padding: 0 var(--space-6); box-sizing: border-box;
+  border: 2px solid transparent; border-radius: var(--radius-md);
+  font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  transition: box-shadow .2s ease, background-color .2s ease, color .2s ease;
+}
+.np-btn--primary { background: var(--neon); color: var(--on-neon); }
+.np-btn--primary:hover { box-shadow: var(--glow-sm); }
+.np-btn--secondary { background: transparent; color: var(--neon-ink); border-color: var(--neon-ink); }
+.np-btn--secondary:hover { background: var(--neon-tint); }
+.np-btn--ghost {
+  background: transparent; color: var(--ink); padding: 0 var(--space-2);
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+}
+.np-btn--ghost:hover { color: var(--neon-ink); text-decoration-thickness: 2px; }
+.np-btn[disabled], .np-btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; box-shadow: none; }
+
+/* ---------- Text link ---------- */
+.np-link {
+  color: var(--neon-ink); text-decoration: underline;
+  text-decoration-thickness: 1px; text-underline-offset: 3px;
+}
+.np-link:hover { text-decoration-thickness: 2px; text-shadow: 0 0 12px var(--neon-glow); }
+.np-link--external::after { content: " \2197" / ""; }
+
+/* ---------- Tag ---------- */
+.np-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); list-style: none; margin: 0; padding: 0; }
+.np-tag {
+  display: inline-flex; align-items: center; min-height: 24px; box-sizing: border-box;
+  padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm);
+  background: var(--neon-tint); color: var(--neon-ink);
+  font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* ---------- Project card ---------- */
+.np-card {
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.np-card:hover, .np-card:focus-within { border-color: var(--neon); box-shadow: var(--glow-lg); }
+.np-card:has(.np-card__link:focus-visible) { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+.np-card__media { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: var(--neon-tint); }
+.np-card__media--placeholder {
+  background-color: var(--neon-tint);
+  background-image: radial-gradient(var(--neon) 1.5px, transparent 1.75px);
+  background-size: var(--space-6) var(--space-6); background-position: center;
+}
+.np-card__body { display: flex; flex-direction: column; gap: var(--space-3); flex: 1; padding: var(--space-6); }
+.np-card__meta { margin: 0; font-family: var(--font-mono); font-size: 13px; line-height: 20px; color: var(--ink-muted); }
+.np-card__title { margin: 0; font-family: var(--font-sans); font-size: 24px; line-height: 30px; font-weight: 600; color: var(--ink); text-wrap: balance; }
+.np-card__link { color: inherit; text-decoration: none; }
+.np-card__link:focus-visible { outline: none; }
+.np-card__link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.np-card__summary { margin: 0; font-size: 16px; line-height: 24px; color: var(--ink-muted); }
+.np-card .np-tags { margin-top: auto; padding-top: var(--space-2); }
+
+/* ---------- Post list ---------- */
+.np-posts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.np-post {
+  display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--space-1) var(--space-6);
+  padding: var(--space-6) 0; border-bottom: 1px solid var(--line);
+}
+.np-post__date { grid-row: 1 / span 2; font-family: var(--font-mono); font-size: 13px; line-height: 28px; color: var(--ink-muted); }
+.np-post__title { margin: 0; font-family: var(--font-sans); font-size: 20px; line-height: 28px; font-weight: 600; text-wrap: balance; }
+.np-post__title a { color: var(--ink); text-decoration: none; }
+.np-post__title a:hover { color: var(--neon-ink); text-decoration: underline; text-underline-offset: 4px; }
+.np-post__desc { margin: 0; font-size: 16px; line-height: 24px; color: var(--ink-muted); }
+@media (max-width: 640px) {
+  .np-post { grid-template-columns: minmax(0, 1fr); }
+  .np-post__date { grid-row: auto; line-height: 20px; }
+}
+
+/* ---------- Site header + nav ---------- */
+.np-skip {
+  position: absolute; left: var(--space-4); top: -100px; z-index: 100;
+  padding: var(--space-2) var(--space-4); border-radius: var(--radius-md);
+  background: var(--ink); color: var(--paper); font-weight: 600; text-decoration: none;
+}
+.np-skip:focus { top: var(--space-4); }
+.np-header { background: var(--paper); border-bottom: 1px solid var(--line); }
+.np-header__inner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--space-2) var(--space-6); max-width: 1200px; margin: 0 auto;
+  padding: var(--space-3) var(--space-6);
+}
+.np-header__brand { display: inline-flex; align-items: center; min-height: 44px; border-radius: var(--radius-sm); }
+.np-header__logo { display: block; height: 40px; width: auto; }
+.np-header__end { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+.np-nav ul { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-4); list-style: none; margin: 0; padding: 0; }
+.np-nav a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-1);
+  font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600;
+  color: var(--ink); text-decoration: none; border-bottom: 2px solid transparent; box-sizing: border-box;
+}
+.np-nav a:hover { color: var(--neon-ink); }
+.np-nav a[aria-current="page"] { color: var(--neon-ink); border-bottom-color: var(--neon); }
+@media (max-width: 640px) { .np-header__inner { padding: var(--space-2) var(--space-4); } }
+
+/* ---------- Theme toggle ---------- */
+.np-theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; padding: 0; cursor: pointer;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: var(--radius-md);
+}
+.np-theme-toggle:hover { color: var(--neon-ink); border-color: var(--neon-ink); }
+.np-theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.np-theme-toggle .np-theme-toggle__sun { display: none; }
+.np-theme-toggle[aria-pressed="true"] .np-theme-toggle__sun { display: block; }
+.np-theme-toggle[aria-pressed="true"] .np-theme-toggle__moon { display: none; }
+
+/* ---------- Footer ---------- */
+.np-footer { background: var(--graphite); color: var(--on-graphite); }
+.np-footer__pattern {
+  height: var(--space-6);
+  background-image: radial-gradient(var(--neon) 1.5px, transparent 1.75px);
+  background-size: var(--space-6) var(--space-6); background-position: 12px 12px;
+}
+.np-footer__inner {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;
+  gap: var(--space-6); max-width: 1200px; margin: 0 auto; padding: var(--space-10) var(--space-6);
+}
+.np-footer ul { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); list-style: none; margin: 0; padding: 0; }
+.np-footer a { color: var(--on-graphite); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.np-footer a:hover { text-decoration-thickness: 2px; }
+.np-footer a:focus-visible { outline: 3px solid var(--on-graphite); outline-offset: 3px; }
+.np-footer__meta { margin: 0; font-family: var(--font-mono); font-size: 13px; line-height: 20px; }
+
+/* ---------- Form field + status ---------- */
+.np-field { display: flex; flex-direction: column; gap: var(--space-1); max-width: 40rem; }
+.np-field__label { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600; color: var(--ink); }
+.np-field__optional { font-weight: 400; color: var(--ink-muted); }
+.np-field__hint { margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+.np-input {
+  box-sizing: border-box; width: 100%; min-height: 44px; padding: var(--space-2) var(--space-3);
+  font-family: var(--font-sans); font-size: 16px; line-height: 24px; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+}
+textarea.np-input { min-height: 8rem; resize: vertical; }
+.np-input:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; border-color: var(--focus-ring); }
+.np-input[aria-invalid="true"] { border: 2px solid var(--danger); }
+.np-field__error { display: flex; gap: var(--space-2); margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--danger); }
+.np-field__error[hidden] { display: none; }
+.np-form-status {
+  max-width: 40rem; box-sizing: border-box; padding: var(--space-4);
+  border: 2px solid currentColor; border-radius: var(--radius-md); background: var(--surface); font-weight: 600;
+}
+.np-form-status--success { color: var(--success); }
+.np-form-status--error { color: var(--danger); }
+.np-form-status p { margin: 0; }
+.np-form-status ul { margin: var(--space-2) 0 0; padding-left: var(--space-6); font-weight: 400; }
+.np-form-status a { color: inherit; }
+.np-form-status:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+
+/* ---------- Pull-quote ---------- */
+.np-quote { margin: 0; max-width: 36rem; }
+.np-quote blockquote { position: relative; margin: 0; padding-top: var(--space-10); }
+.np-quote blockquote::before {
+  content: "\201C" / ""; position: absolute; top: -8px; left: -4px;
+  font-family: var(--font-sans); font-weight: 600; font-size: 96px; line-height: 1; color: var(--neon);
+  text-shadow: 0 0 16px var(--neon-glow);
+}
+.np-quote p { margin: 0; font-family: var(--font-sans); font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
+.np-quote figcaption {
+  margin-top: var(--space-4); font-size: 12px; line-height: 16px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted);
+}
+
+/* ---------- Neon sign: Beon tube lettering in a square frame (np-sign--beon) ---------- */
+.np-sign {
+  --rx: 0deg; --ry: 0deg;
+  --np-size: clamp(56px, 9vw, 132px); /* size of the PURPLE row; everything else follows it */
+  position: relative; display: inline-flex; max-width: 100%;
+  perspective: 900px; user-select: none; font-weight: 400;
+}
+.np-sign__board {
+  position: relative; isolation: isolate;
+  transform: rotateX(var(--rx)) rotateY(var(--ry)); transform-style: preserve-3d;
+  transition: transform .4s ease-out;
+}
+/* A run of lit glass tube, with its cast shadow on the wall */
+.np-sign__lit {
+  position: relative; display: block; isolation: isolate; white-space: nowrap; line-height: 1;
+  color: var(--sign-tube);
+  text-shadow: 0 0 1px var(--sign-tube), 0 0 6px var(--neon-glow), 0 0 18px var(--neon-glow), 0 0 42px var(--neon-glow);
+}
+.np-sign__lit::after {
+  content: attr(data-text); position: absolute; inset: 0; z-index: -1; padding: inherit;
+  color: var(--wall-shadow); text-shadow: none;
+  filter: blur(5px); transform: translate(10px, 16px);
+}
+.np-sign__flicker--uneven { animation: np-flicker-uneven 5.3s steps(1, end) infinite; }
+@keyframes np-flicker-uneven {
+  0%, 61%, 64%, 100% { opacity: 1; }
+  62% { opacity: .2; } 63% { opacity: .7; }
+}
+
+/* Square frame of one neon tube; three right-aligned rows: NEON (stretched to the width of PURPLE), PURPLE, studio with a tube rule */
+.np-sign--beon { font-family: var(--font-beon); }
+.np-sign--beon .np-sign__board {
+  display: flex; flex-direction: column; justify-content: center; align-items: stretch;
+  aspect-ratio: 1; box-sizing: border-box; padding: 0 calc(var(--np-size) * .45);
+  border: 4px solid var(--sign-tube); border-radius: var(--radius-lg);
+  box-shadow: 0 0 10px var(--neon-glow), inset 0 0 10px var(--neon-glow), 12px 18px 22px var(--wall-shadow);
+}
+.np-sign--beon .np-sign__row { text-align: right; line-height: .74; }
+.np-sign--beon .np-sign__row--top { font-size: calc(var(--np-size) * 1.4); }
+.np-sign--beon .np-sign__row--mid { font-size: var(--np-size); margin-top: calc(var(--np-size) * .2); }
+.np-sign--beon .np-sign__studio {
+  display: flex; align-items: center; gap: calc(var(--np-size) * .12);
+  margin-top: calc(var(--np-size) * .2);
+  font-size: calc(var(--np-size) * .32); letter-spacing: .3em; line-height: 1;
+}
+.np-sign--beon .np-sign__studio::before {
+  content: ""; flex: 1; height: max(2px, calc(var(--np-size) * .027)); border-radius: 99px;
+  background: var(--sign-tube); box-shadow: 0 0 6px var(--neon-glow), 0 0 18px var(--neon-glow);
+}
+.np-sign--beon .np-sign__studio .np-sign__lit { margin-right: -.3em; }
+
+@media (max-width: 640px) {
+  .np-sign__board { transform: none; }
+}
+
+/* ---------- Motion off when asked ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .np-btn, .np-card, .np-sign__board { transition: none; }
+  .np-sign__board { transform: none; }
+  .np-sign__flicker--uneven { animation: none; }
+}

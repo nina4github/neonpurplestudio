@@ -1,0 +1,9 @@
+---
+import { SITE } from "../site.config"
+interface Props { text: string; by?: string }
+const { text, by = SITE.author } = Astro.props
+---
+<figure class="np-quote">
+  <blockquote><p>{text}</p></blockquote>
+  <figcaption>{by}</figcaption>
+</figure>

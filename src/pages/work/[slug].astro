@@ -1,0 +1,46 @@
+---
+import { Image } from "astro:assets"
+import { render } from "astro:content"
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import { getProjects } from "../../lib/content"
+import { url } from "../../lib/url"
+
+export async function getStaticPaths() {
+  const projects = await getProjects()
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }))
+}
+const { project, next } = Astro.props
+const { title, summary, client, year, cover, coverAlt, tags, draft, link } = project.data
+const { Content } = await render(project)
+const meta = [client, year].filter(Boolean).join(" · ")
+---
+<BaseLayout title={title} description={summary} image={cover?.src} type="article">
+  <article class="site-container project">
+    <header class="project__head">
+      <p class="site-eyebrow"><a href={url("/work/")}>Work</a>{meta && ` · ${meta}`}</p>
+      <h1 class="site-display">{title} {draft && <span class="site-draft-badge">Draft</span>}</h1>
+      <p class="site-lead">{summary}</p>
+      {tags.length > 0 && <ul class="np-tags" aria-label="Skills">{tags.map((t) => <li class="np-tag">{t}</li>)}</ul>}
+    </header>
+    {cover && <Image class="project__cover" src={cover} alt={coverAlt ?? ""} widths={[800, 1600]} sizes="(min-width: 1200px) 1120px, 100vw" />}
+    <div class="site-prose"><Content /></div>
+    {link && <p><a class="np-link np-link--external" href={link}>Visit the project<span class="np-visually-hidden"> (another site)</span></a></p>}
+    {next && next.id !== project.id && (
+      <nav class="project__next" aria-label="Next project">
+        <p class="site-eyebrow">Next project</p>
+        <a class="site-h2" href={url(`/work/${next.id}/`)}>{next.data.title}</a>
+      </nav>
+    )}
+  </article>
+</BaseLayout>
+<style>
+  .project { display: flex; flex-direction: column; gap: var(--space-10); padding-block: var(--space-16) var(--space-24); }
+  .project__head { display: flex; flex-direction: column; gap: var(--space-4); max-width: 48rem; }
+  .project__cover { width: 100%; height: auto; border-radius: var(--radius-lg); }
+  .project__next { border-top: 1px solid var(--line); padding-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-2); }
+  .project__next a { color: var(--ink); }
+  .project__next a:hover { color: var(--neon-ink); }
+</style>

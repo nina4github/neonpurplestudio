@@ -1,0 +1,148 @@
+---
+import { render } from "astro:content"
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import PageHeader from "../../components/PageHeader.astro"
+import { getPage } from "../../lib/content"
+import { url } from "../../lib/url"
+import { SITE } from "../../site.config"
+
+const page = await getPage("contact")
+const { Content } = await render(page)
+const endpoint = SITE.formwardEndpoint
+const thanks = new URL(url("/contact/thanks/"), Astro.site).href
+---
+<BaseLayout title={page.data.title} description={page.data.description}>
+  <PageHeader title="Let's talk" eyebrow="Contact" />
+  <section class="site-container contact">
+    <div class="site-prose contact__intro"><Content /></div>
+
+    {endpoint ? (
+      <form class="contact__form" action={endpoint} method="POST" data-contact-form>
+        <div class="np-form-status np-form-status--error" role="alert" tabindex="-1" data-form-errors hidden>
+          <p data-form-errors-title>There is a problem:</p>
+          <ul data-form-errors-list></ul>
+        </div>
+
+        <input type="hidden" name="_redirect" value={thanks} />
+        <input type="hidden" name="_subject" value={`New message from the ${SITE.name} website`} />
+        <div class="contact__trap" aria-hidden="true">
+          <label for="_gotcha">Leave this field empty</label>
+          <input id="_gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="np-field">
+          <label class="np-field__label" for="name">Name</label>
+          <input class="np-input" id="name" name="name" autocomplete="name" required aria-describedby="name-error" />
+          <p class="np-field__error" id="name-error" hidden><span aria-hidden="true">!</span> <span>Enter your name</span></p>
+        </div>
+        <div class="np-field">
+          <label class="np-field__label" for="email">Email</label>
+          <p class="np-field__hint" id="email-hint">So I can write back.</p>
+          <input class="np-input" id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-hint email-error" />
+          <p class="np-field__error" id="email-error" hidden><span aria-hidden="true">!</span> <span>Enter an email address like name@example.com</span></p>
+        </div>
+        <div class="np-field">
+          <label class="np-field__label" for="company">Company <span class="np-field__optional">(optional)</span></label>
+          <input class="np-input" id="company" name="company" autocomplete="organization" />
+        </div>
+        <div class="np-field">
+          <label class="np-field__label" for="message">Message</label>
+          <p class="np-field__hint" id="message-hint">What are you working on, and where could I help?</p>
+          <textarea class="np-input" id="message" name="message" required aria-describedby="message-hint message-error"></textarea>
+          <p class="np-field__error" id="message-error" hidden><span aria-hidden="true">!</span> <span>Write a short message</span></p>
+        </div>
+        <p class="site-muted contact__privacy">Your message is sent through Formward, an EU service that stores it in Sweden. I only use it to reply to you.</p>
+        <div><button class="np-btn np-btn--primary" type="submit" data-submit>Send message</button></div>
+      </form>
+    ) : (
+      <p class="site-lead">The contact form is on its way. Meanwhile, reach me on <a class="np-link" href={SITE.linkedin}>LinkedIn</a>.</p>
+    )}
+
+    <div class="np-form-status np-form-status--success" role="status" tabindex="-1" data-form-success hidden>
+      <p>Message sent. Thank you, I'll get back to you soon.</p>
+    </div>
+
+    <ul class="contact__other" aria-label="Other ways to reach me">
+      {SITE.email && <li>Email: <a class="np-link" href={`mailto:${SITE.email}`}>{SITE.email}</a></li>}
+      <li>LinkedIn: <a class="np-link" href={SITE.linkedin}>linkedin.com/in/elenanazzi</a></li>
+      <li>Based in {SITE.location}</li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact { display: flex; flex-direction: column; gap: var(--space-10); padding-bottom: var(--space-24); }
+  .contact > * { max-width: 52rem; }
+  .contact__form { display: flex; flex-direction: column; gap: var(--space-6); }
+  .contact__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .contact__privacy { font-size: 14px; line-height: 20px; max-width: 40rem; }
+  .contact__other { list-style: none; margin: 0; padding: var(--space-6) 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: var(--space-2); }
+</style>
+
+<script>
+  // Progressive enhancement: without JavaScript the form posts normally and Formward redirects to /contact/thanks/.
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]")
+  if (form) {
+    form.noValidate = true
+    const summary = form.querySelector<HTMLElement>("[data-form-errors]")!
+    const summaryTitle = form.querySelector<HTMLElement>("[data-form-errors-title]")!
+    const summaryList = form.querySelector<HTMLElement>("[data-form-errors-list]")!
+    const success = document.querySelector<HTMLElement>("[data-form-success]")!
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]")!
+    const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]"))
+
+    const showSummary = (title: string, items: { id: string; text: string }[]) => {
+      summaryTitle.textContent = title
+      summaryList.replaceChildren(
+        ...items.map(({ id, text }) => {
+          const li = document.createElement("li")
+          if (id) {
+            const a = document.createElement("a")
+            a.href = `#${id}`
+            a.textContent = text
+            a.addEventListener("click", (e) => { e.preventDefault(); document.getElementById(id)?.focus() })
+            li.append(a)
+          } else li.textContent = text
+          return li
+        }),
+      )
+      summary.hidden = false
+      summary.focus()
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault()
+      const errors: { id: string; text: string }[] = []
+      for (const field of fields) {
+        const error = document.getElementById(`${field.id}-error`)
+        const valid = field.value.trim() !== "" && field.checkValidity()
+        field.setAttribute("aria-invalid", valid ? "false" : "true")
+        if (error) error.hidden = valid
+        if (!valid && error) errors.push({ id: field.id, text: error.textContent!.replace("!", "").trim() })
+      }
+      if (errors.length) {
+        showSummary(`There is a problem with ${errors.length} field${errors.length > 1 ? "s" : ""}:`, errors)
+        return
+      }
+      summary.hidden = true
+      submit.disabled = true
+      submit.textContent = "Sending…"
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>),
+        })
+        const data = await res.json().catch(() => ({}))
+        if (!res.ok || data.ok === false) throw new Error(data.error || `Status ${res.status}`)
+        form.hidden = true
+        success.hidden = false
+        success.focus()
+      } catch {
+        showSummary("Your message could not be sent. Please try again, or reach me on LinkedIn.", [])
+        submit.disabled = false
+        submit.textContent = "Send message"
+      }
+    })
+  }
+</script>

@@ -1,0 +1,17 @@
+---
+import { SITE } from "../site.config"
+import { url } from "../lib/url"
+const year = new Date().getFullYear()
+---
+<footer class="np-footer">
+  <div class="np-footer__pattern" aria-hidden="true"></div>
+  <div class="np-footer__inner">
+    <ul>
+      <li><a href={url("/contact/")}>Contact</a></li>
+      <li><a href={SITE.linkedin}>LinkedIn</a></li>
+      <li><a href={SITE.ideasUrl}>Ideas<span class="np-visually-hidden"> (notes site)</span></a></li>
+      <li><a href={url("/rss.xml")}>RSS</a></li>
+    </ul>
+    <p class="np-footer__meta">{SITE.name} · {SITE.location} · © {year}</p>
+  </div>
+</footer>

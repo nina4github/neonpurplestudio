@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets"
+import { render } from "astro:content"
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import { getPosts, formatDate } from "../../lib/content"
+import { url } from "../../lib/url"
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }))
+}
+const { post } = Astro.props
+const { title, description, pubDate, updatedDate, tags, cover, coverAlt, draft } = post.data
+const { Content } = await render(post)
+---
+<BaseLayout title={title} description={description} image={cover?.src} type="article">
+  <article class="site-container post">
+    <header class="post__head">
+      <p class="site-eyebrow">
+        <a href={url("/writing/")}>Writing</a> ·
+        <time datetime={pubDate.toISOString().slice(0, 10)}>{formatDate(pubDate)}</time>
+        {updatedDate && <> · updated <time datetime={updatedDate.toISOString().slice(0, 10)}>{formatDate(updatedDate)}</time></>}
+      </p>
+      <h1 class="site-display">{title} {draft && <span class="site-draft-badge">Draft</span>}</h1>
+      <p class="site-lead">{description}</p>
+      {tags.length > 0 && <ul class="np-tags" aria-label="Topics">{tags.map((t) => <li class="np-tag">{t}</li>)}</ul>}
+    </header>
+    {cover && <Image class="post__cover" src={cover} alt={coverAlt ?? ""} widths={[800, 1600]} sizes="(min-width: 900px) 800px, 100vw" />}
+    <div class="site-prose"><Content /></div>
+  </article>
+</BaseLayout>
+<style>
+  .post { display: flex; flex-direction: column; gap: var(--space-10); padding-block: var(--space-16) var(--space-24); }
+  .post__head { display: flex; flex-direction: column; gap: var(--space-4); max-width: 48rem; }
+  .post__cover { width: 100%; max-width: 800px; height: auto; border-radius: var(--radius-lg); }
+</style>

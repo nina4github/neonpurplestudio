@@ -1,0 +1,42 @@
+---
+import { SITE } from "../site.config"
+import { url } from "../lib/url"
+import wordmark from "../../design-system/assets/Logos/neon-purple-studio-wordmark.svg?url"
+
+const items = [
+  { label: "Work", href: url("/work/") },
+  { label: "Writing", href: url("/writing/") },
+  { label: "About", href: url("/about/") },
+  { label: "Ideas", href: SITE.ideasUrl, external: "notes site" },
+  { label: "Contact", href: url("/contact/") },
+]
+const path = Astro.url.pathname
+const isCurrent = (href: string) => href.startsWith("/") && path.startsWith(href)
+---
+<a class="np-skip" href="#main">Skip to content</a>
+<header class="np-header">
+  <div class="np-header__inner">
+    <a class="np-header__brand" href={url("/")}>
+      <img class="np-header__logo" src={wordmark} alt={`${SITE.name}, home`} width="160" height="40" />
+    </a>
+    <div class="np-header__end">
+      <nav class="np-nav" aria-label="Main">
+        <ul>
+          {items.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>
+                {item.label}
+                {item.external && <span class="np-visually-hidden"> ({item.external})</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <button class="np-theme-toggle" type="button" aria-pressed="false" data-np-theme-toggle>
+        <span class="np-visually-hidden">Dark theme</span>
+        <svg class="np-theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+        <svg class="np-theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+      </button>
+    </div>
+  </div>
+</header>
